@@ -1,0 +1,263 @@
+/* Flex general */
+
+.contenedor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(1, 216, 216);
+    height: 100vh;
+    padding: 25px;
+}
+
+/* Dialogo */
+
+.dialogo{
+    font-family:"roboto";
+    font-weight: bold;
+    color: whitesmoke;
+}
+/* Flexbox selector de usuario */
+
+.users{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: space-evenly;
+    padding-top: 10vh;
+
+}
+
+/* Estilo de los iconos de usuario  */
+
+.usericon{
+    height: 100px;
+    width: 100px;
+    background-color: white;
+    border-radius: 50%;
+    background-image: url("icon/user.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+/* Estilo usuario y texto de nombre */
+
+.user{
+    text-align: center;
+    font-family: "roboto";
+    font-weight: bold;
+    font-size: 20px;
+    color: rgb(240, 239, 239);
+    animation: appear 1s ease-out forwards;
+}
+
+/* Pizarra */
+/* Estilos para la pizarra de tareas */
+.tasks {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family:"roboto";
+    font-weight: bold;
+  }
+  
+  .tasks h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .tasks ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .tasks li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .tasks li input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .tasks li label {
+    font-size: 16px;
+  }
+  
+/* Estilo para el nuevo input */
+#newTaskInput {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #333;
+    transition: box-shadow 0.3s ease;
+    font-family:"roboto";
+    font-weight: bold;
+  }
+  
+  #newTaskInput:focus {
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo para el botón "Añadir" */
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Estilo para la lista de tareas */
+  .tasks {
+    margin-top: 20px;
+  }
+  
+  .tasks h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .tasks ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .tasks li {
+    margin-bottom: 10px;
+  }
+  
+  .tasks label {
+    margin-left: 10px;
+  }
+
+/* Papelera */
+
+.delete-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f44336;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-icon:hover {
+    background-color: #d32f2f;
+  }
+  
+  .dialog {
+    display: none;
+    animation: slideInFromTop 0.5s ease-out forwards;
+    position: absolute;
+    top:auto;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 5vh;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    color:black;
+    font-family:"roboto";
+    font-weight: bold;
+  }
+  
+  .dialog p {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .buttons button {
+    margin-left: 10px;
+  }
+  
+  /* LogOut */
+
+  #logoutButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  
+  .fa-arrow-left {
+    color: #ffffff;
+    font-size: 20px;
+  }
+  
+
+/* Animaciones */
+
+/* De usuarios */
+.usericon{
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .usericon:hover {
+    transform: scale(1.1);
+  }
+
+/* Del dialogo */
+
+/* CSS */
+@keyframes slideInFromTop {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .dialogo{
+    animation: slideInFromTop 1s ease-out forwards;
+  }
+  

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+</head>
+<body>
+    <div class="contenedor">
+        <button id="logoutButton" onclick="logout()">
+            <i class="fas fa-arrow-left"></i>
+        </button>          
+
+        <section class="user">
+            <div class="usericon"></div>
+            <p id="username"></p>
+        </section>
+        <div class="tasks">
+            <h2>Tareas</h2>
+            <ul id="taskList"></ul>
+            <input type="text" id="newTaskInput" placeholder="Añadir tarea">
+            <button onclick="addTask()">Añadir</button>
+        </div>
+
+        <div class="delete-icon" onclick="showConfirmationDialog()">
+            <i class="fas fa-trash"></i>
+          </div>
+          
+          <div id="confirmationDialog" class="dialog">
+            <p>¿Quieres eliminar todas las tareas?</p>
+            <div class="buttons">
+              <button onclick="cancelDeletion()">Cancelar</button>
+              <button onclick="confirmDeletion()">Confirmar</button>
+            </div>
+          </div>          
+        </div>
+</body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const titleuser = urlParams.get('user');
+    document.title = "Hola, " + titleuser;
+
+    const whoami = document.getElementById('username');
+    whoami.textContent = titleuser;
+
+    // Configuración de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyDO9DorELMkRYt0mwCrlaUEamyenU17axo",
+
+        authDomain: "family-56779.firebaseapp.com",
+
+        databaseURL: "https://family-56779-default-rtdb.europe-west1.firebasedatabase.app",
+
+        projectId: "family-56779",
+
+        storageBucket: "family-56779.appspot.com",
+
+        messagingSenderId: "121915702066",
+
+        appId: "1:121915702066:web:3a4d14f362bed6e502752b",
+
+        measurementId: "G-RXCYDKB60Y"   
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Obtener referencia a la lista de tareas en Firebase
+    const database = firebase.database();
+    const tasksRef = database.ref('tasks');
+
+    // Función para agregar una nueva tarea a Firebase
+    function addTask() {
+        const newTaskInput = document.getElementById('newTaskInput');
+        const newTaskTitle = newTaskInput.value.trim();
+
+        if (newTaskTitle !== '') {
+            const newTask = {
+                title: newTaskTitle,
+                completed: false
+            };
+
+            tasksRef.push().set(newTask);
+            newTaskInput.value = '';
+        }
+    }
+
+    // Función para actualizar la lista de tareas en la interfaz
+    function updateTaskList(snapshot) {
+        const taskList = document.getElementById('taskList');
+        taskList.innerHTML = '';
+
+        snapshot.forEach(childSnapshot => {
+            const task = childSnapshot.val();
+            const taskId = childSnapshot.key;
+
+            const taskItem = document.createElement('li');
+            taskItem.innerHTML = `
+                <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus('${taskId}', this.checked)">
+                <label>${task.title}</label>
+            `;
+
+            taskList.appendChild(taskItem);
+        });
+    }
+
+    // Función para actualizar el estado de una tarea en Firebase
+    function updateTaskStatus(taskId, completed) {
+        tasksRef.child(taskId).update({ completed });
+    }
+
+    // Suscribirse a los cambios en la lista de tareas en Firebase
+    tasksRef.on('value', snapshot => {
+        updateTaskList(snapshot);
+    });
+</script>
+<script src="functions.js"></script>
