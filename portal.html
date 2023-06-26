@@ -39,87 +39,25 @@
             </div>
           </div>          
         </div>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="functions.js"></script>
+        <script>
+        // Obtener la URL actual
+        const urlActual = window.location.href;
+
+        // Crear un objeto URLSearchParams con la URL
+        const params = new URLSearchParams(new URL(urlActual).search);
+
+        // Obtener el valor del parámetro "user"
+        const WHOAMI = params.get('user');
+
+        //Establecer usuario en portal
+        const portaluser = document.getElementById("username");
+        portaluser.textContent = WHOAMI;
+        </script>
+        
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const titleuser = urlParams.get('user');
-    document.title = "Hola, " + titleuser;
 
-    const whoami = document.getElementById('username');
-    whoami.textContent = titleuser;
 
-    // Configuración de Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyDO9DorELMkRYt0mwCrlaUEamyenU17axo",
-
-        authDomain: "family-56779.firebaseapp.com",
-
-        databaseURL: "https://family-56779-default-rtdb.europe-west1.firebasedatabase.app",
-
-        projectId: "family-56779",
-
-        storageBucket: "family-56779.appspot.com",
-
-        messagingSenderId: "121915702066",
-
-        appId: "1:121915702066:web:3a4d14f362bed6e502752b",
-
-        measurementId: "G-RXCYDKB60Y"   
-    };
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Obtener referencia a la lista de tareas en Firebase
-    const database = firebase.database();
-    const tasksRef = database.ref('tasks');
-
-    // Función para agregar una nueva tarea a Firebase
-    function addTask() {
-        const newTaskInput = document.getElementById('newTaskInput');
-        const newTaskTitle = newTaskInput.value.trim();
-
-        if (newTaskTitle !== '') {
-            const newTask = {
-                title: newTaskTitle,
-                completed: false
-            };
-
-            tasksRef.push().set(newTask);
-            newTaskInput.value = '';
-        }
-    }
-
-    // Función para actualizar la lista de tareas en la interfaz
-    function updateTaskList(snapshot) {
-        const taskList = document.getElementById('taskList');
-        taskList.innerHTML = '';
-
-        snapshot.forEach(childSnapshot => {
-            const task = childSnapshot.val();
-            const taskId = childSnapshot.key;
-
-            const taskItem = document.createElement('li');
-            taskItem.innerHTML = `
-                <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus('${taskId}', this.checked)">
-                <label>${task.title}</label>
-            `;
-
-            taskList.appendChild(taskItem);
-        });
-    }
-
-    // Función para actualizar el estado de una tarea en Firebase
-    function updateTaskStatus(taskId, completed) {
-        tasksRef.child(taskId).update({ completed });
-    }
-
-    // Suscribirse a los cambios en la lista de tareas en Firebase
-    tasksRef.on('value', snapshot => {
-        updateTaskList(snapshot);
-    });
-</script>
-<script src="functions.js"></script>
